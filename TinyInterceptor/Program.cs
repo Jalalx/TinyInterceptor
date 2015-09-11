@@ -32,6 +32,10 @@ namespace TinyInterceptor
 
     public class Person : MarshalByRefObject
     {
+        public Person()
+        {
+        }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -45,6 +49,7 @@ namespace TinyInterceptor
         }
     }
 
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
     public class InterceptAttribute : Attribute
     {
         public Type TargetType { get; set; }
@@ -131,13 +136,13 @@ namespace TinyInterceptor
             var methodCallMessage = message as IMethodCallMessage;
             var method = methodCallMessage.MethodBase;
 
-            var interceptAttribute = method.GetCustomAttributes(false/* do not search in parent member. */)
+            var interceptAttribute = method.GetCustomAttributes(false/* do not search in parent members. */)
                 .SingleOrDefault(a => a.GetType() == typeof(InterceptAttribute)) as InterceptAttribute;
 
             object result = null;
             if (interceptAttribute != null)
             {
-                // intercept it.
+                // create an instance of intercept support class which introduced to InterceptAttribute.
                 var interceptorSupport = Activator.CreateInstance(interceptAttribute.TargetType) as IInterceptSupport;
 
                 // call IInterceptSupport.BeforeExecute
