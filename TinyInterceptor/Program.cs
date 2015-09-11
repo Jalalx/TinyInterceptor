@@ -39,8 +39,9 @@ namespace TinyInterceptor
         [Intercept(typeof(LoggingIntercept))]
         public void Introduce()
         {
-            //Console.WriteLine("My name is {0} {1}.", FirstName, LastName);
-            throw new InvalidOperationException("wtf?");
+            Console.WriteLine("My name is {0} {1}.", FirstName, LastName);
+            // if you want to throw an exception, Run Without Debuggin to see results.
+            //throw new InvalidOperationException("wtf?");
         }
     }
 
@@ -70,12 +71,12 @@ namespace TinyInterceptor
     {
         public void AfterExecute(object instance)
         {
-            Console.WriteLine("After member executed");
+            Console.WriteLine("After member execute");
         }
 
         public void BeforeExecute(object instance)
         {
-            Console.WriteLine("Before member executed");
+            Console.WriteLine("Before member execute");
         }
 
         public void OnError(object instance, Exception ex)
@@ -95,12 +96,11 @@ namespace TinyInterceptor
 
         public T Resolve<T>() where T : class, new()
         {
-            if (_registeredTypes.Contains(typeof(T)))
-                return Build<T>();
+            if (!_registeredTypes.Contains(typeof(T)))
+                throw new InvalidOperationException("Type was not registered.");
 
-            throw new InvalidOperationException("Type was not registered.");
+            return Build<T>();
         }
-
 
         private T Build<T>() where T : class, new()
         {
