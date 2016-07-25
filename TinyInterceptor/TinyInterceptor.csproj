@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IInterceptSupport.cs" />
+    <Compile Include="InterceptAttribute.cs" />
+    <Compile Include="Interceptor.cs" />
+    <Compile Include="InternalProxy.cs" />
+    <Compile Include="LoggingIntercept.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
